@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription | Yummy Universe</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
+
     <style>
         * {
             margin: 0;
@@ -14,7 +17,6 @@
         }
 
         body {
-            /* Un fond dégradé moderne et doux */
             background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
             min-height: 100vh;
             display: flex;
@@ -24,7 +26,6 @@
         }
 
         .glass-container {
-            /* Effet Glassmorphism */
             background: rgba(255, 255, 255, 0.25);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
@@ -77,8 +78,10 @@
             color: #333;
             font-size: 14px;
             transition: all 0.3s ease;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
         }
+
+        /* Ajustement pour le sélecteur de pays */
+        .iti { width: 100%; }
 
         .input-group input:focus, 
         .input-group select:focus, 
@@ -107,15 +110,8 @@
             box-shadow: 0 10px 20px rgba(118, 75, 162, 0.3);
         }
 
-        .btn-submit:active {
-            transform: translateY(0);
-        }
-
-        /* Responsive pour mobile */
         @media (max-width: 480px) {
-            .glass-container {
-                padding: 25px;
-            }
+            .glass-container { padding: 25px; }
         }
     </style>
 </head>
@@ -127,7 +123,7 @@
             <p>Rejoignez les cours d'anglais exclusifs de Yummy Yummy</p>
         </div>
 
-        <form action="https://formspree.io/f/xnjgppek" method="POST">
+        <form action="https://formspree.io/f/xaqpeoor" method="POST" id="registrationForm">
             
             <div class="input-group">
                 <label for="name">Nom Complet</label>
@@ -141,7 +137,7 @@
 
             <div class="input-group">
                 <label for="whatsapp">Numéro WhatsApp</label>
-                <input type="tel" id="whatsapp" name="whatsapp" placeholder="+243 82 00 00 000" required>
+                <input type="tel" id="whatsapp" name="whatsapp" required>
             </div>
 
             <div class="input-group">
@@ -160,10 +156,28 @@
                 <textarea id="goals" name="goals" rows="3" placeholder="Parler couramment, préparer un voyage..." required></textarea>
             </div>
 
+            <input type="hidden" name="full_phone_number" id="full_phone_number">
+
             <button type="submit" class="btn-submit">Valider mon inscription 🚀</button>
 
         </form>
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <script>
+        const phoneInputField = document.querySelector("#whatsapp");
+        const phoneInput = window.intlTelInput(phoneInputField, {
+            preferredCountries: ["cd", "fr", "be"],
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        });
+
+        const form = document.querySelector("#registrationForm");
+        form.addEventListener("submit", (e) => {
+            // On récupère le numéro au format international (+243...)
+            const fullNumber = phoneInput.getNumber();
+            document.querySelector("#full_phone_number").value = fullNumber;
+        });
+    </script>
 
 </body>
 </html>
